@@ -304,7 +304,7 @@ ELO_RATINGS = {
     
     # CONCACAF
     "🇺🇸 Estados Unidos": 1830, "🇲🇽 México": 1810, "🇨🇦 Canadá": 1760, "🇵🇦 Panamá": 1720, 
-    "🇨🇷 Costa Rica": 1680, "🇯🇲 Jamaica": 1640, "🇭🇳 Honduras": 1590, "🇨🇼 Curazao": 1550
+    "🇨🇷 Costa Rica": 1680, "🇯🇲 Jamaica": 1640, "🇭🇳 Honduras": 1590, "🇨🇼 Curazao": 1550,
     
     # CAF (África)
     "🇲🇦 Marruecos": 1880, "🇸🇳 Senegal": 1840, "🇪🇬 Egipto": 1790, "🇩🇿 Argelia": 1760, 
