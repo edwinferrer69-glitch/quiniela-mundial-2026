@@ -300,7 +300,7 @@ ELO_RATINGS = {
     "🇫🇷 Francia": 2120, "🇪🇸 España": 2040, "🏴󠁧󠁢󠁥󠁮󠁧󠁿 Inglaterra": 2030, "🇵🇹 Portugal": 2010, 
     "🇳🇱 Países Bajos": 1980, "🇧🇪 Bélgica": 1970, "🇮🇹 Italia": 1960, "🇩🇪 Alemania": 1950, 
     "🇭🇷 Croacia": 1940, "🇨🇭 Suiza": 1890, "🇩🇰 Dinamarca": 1880, "🇦🇹 Austria": 1860, 
-    "🇷🇸 Serbia": 1850, "🇭🇺 Hungría": 1820, "🇺🇦 Ucrania": 1810, "🇵🇱 Polonia": 1800,
+    "🇷🇸 Serbia": 1850, "🇭🇺 Hungría": 1820, "🇺🇦 Ucrania": 1810, "🇵🇱 Polonia": 1800, "🇸🇪 Suecia": 1790,
     
     # CONCACAF
     "🇺🇸 Estados Unidos": 1830, "🇲🇽 México": 1810, "🇨🇦 Canadá": 1760, "🇵🇦 Panamá": 1720, 
