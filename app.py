@@ -372,7 +372,7 @@ def calcular_xg(elo_a: float, elo_b: float) -> tuple:
     
     # FACTOR DE AGRESIVIDAD: 
     # Si quieres más goleadas, sube esto a 0.0045. Si es muy exagerado, bájalo a 0.0025.
-    factor_agresividad = 0.0035 
+    factor_agresividad = 0.0045 
     
     diff_elo = (elo_a - elo_b)
     
