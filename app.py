@@ -288,9 +288,9 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-# ─────────────────────────────────────────────
-#  BASE DE DATOS ELO – MUNDIAL 2026 (48 EQUIPOS CON BANDERAS)
-# ─────────────────────────────────────────────
+# ─────────────────────────────────────────────────────────────
+#  BASE DE DATOS ELO – MUNDIAL 2026 (48 EQUIPOS COMPLETOS)
+# ─────────────────────────────────────────────────────────────
 ELO_RATINGS = {
     # CONMEBOL
     "🇦🇷 Argentina": 2140, "🇧🇷 Brasil": 2050, "🇺🇾 Uruguay": 1950, "🇨🇴 Colombia": 1930, 
@@ -300,20 +300,25 @@ ELO_RATINGS = {
     "🇫🇷 Francia": 2120, "🇪🇸 España": 2040, "🏴󠁧󠁢󠁥󠁮󠁧󠁿 Inglaterra": 2030, "🇵🇹 Portugal": 2010, 
     "🇳🇱 Países Bajos": 1980, "🇧🇪 Bélgica": 1970, "🇮🇹 Italia": 1960, "🇩🇪 Alemania": 1950, 
     "🇭🇷 Croacia": 1940, "🇨🇭 Suiza": 1890, "🇩🇰 Dinamarca": 1880, "🇦🇹 Austria": 1860, 
-    "🇷🇸 Serbia": 1850, "🇭🇺 Hungría": 1820, "🇺🇦 Ucrania": 1810, "🇵🇱 Polonia": 1800, "🇸🇪 Suecia": 1790,
+    "🇷🇸 Serbia": 1850, "🇭🇺 Hungría": 1820, "🇺🇦 Ucrania": 1810, "🇵🇱 Polonia": 1800, 
+    "🇸🇪 Suecia": 1790, "🇨🇿 República Checa": 1730, "🏴󠁧󠁢󠁳󠁣󠁴󠁿 Escocia": 1700, 
+    "🇹🇷 Turquía": 1780, "🇧🇦 Bosnia y Herzegovina": 1600, "🇳🇴 Noruega": 1790,
     
     # CONCACAF
     "🇺🇸 Estados Unidos": 1830, "🇲🇽 México": 1810, "🇨🇦 Canadá": 1760, "🇵🇦 Panamá": 1720, 
     "🇨🇷 Costa Rica": 1680, "🇯🇲 Jamaica": 1640, "🇭🇳 Honduras": 1590, "🇨🇼 Curazao": 1550,
+    "🇭🇹 Haití": 1500,
     
     # CAF (África)
     "🇲🇦 Marruecos": 1880, "🇸🇳 Senegal": 1840, "🇪🇬 Egipto": 1790, "🇩🇿 Argelia": 1760, 
     "🇨🇮 Costa de Marfil": 1750, "🇳🇬 Nigeria": 1740, "🇨🇲 Camerún": 1710, "🇲🇱 Malí": 1690, 
-    "🇨🇻 Cabo Verde": 1620,
+    "🇨🇻 Cabo Verde": 1620, "🇿🇦 Sudáfrica": 1650, "🇹🇳 Túnez": 1680, "🇨🇩 RD Congo": 1650,
+    "🇬🇭 Ghana": 1660,
     
     # AFC (Asia)
     "🇯🇵 Japón": 1850, "🇮🇷 Irán": 1820, "🇰🇷 Corea del Sur": 1790, "🇦🇺 Australia": 1780, 
     "🇸🇦 Arabia Saudita": 1690, "🇶🇦 Qatar": 1670, "🇮🇶 Irak": 1640, "🇦🇪 Emiratos Árabes Unidos": 1610,
+    "🇺🇿 Uzbekistán": 1600, "🇯🇴 Jordania": 1550,
     
     # OFC (Oceanía)
     "🇳🇿 Nueva Zelanda": 1580
