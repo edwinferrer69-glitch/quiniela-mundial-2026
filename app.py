@@ -364,23 +364,26 @@ def calcular_prob_elo(elo_a: float, elo_b: float, ajuste_empate: bool) -> dict:
 def calcular_xg(elo_a: float, elo_b: float) -> tuple:
     """
     Convierte diferencia Elo en goles esperados (xG) para cada equipo.
-    Modelo calibrado con promedios históricos de Mundiales (2.5 goles/partido).
+    Modelo con factor de agresividad para evitar resultados planos.
     """
-    MEDIA_GOLES = 2.5
-    diff = elo_a - elo_b
-
-    # Factor de calidad ofensiva/defensiva basado en Elo
-    factor_a = 1 + (diff / 1200)
-    factor_b = 1 - (diff / 1200)
-
-    # xG proporcional a la media histórica, ajustado por diferencia
-    ratio = factor_a / (factor_a + factor_b) if (factor_a + factor_b) > 0 else 0.5
-    xg_a = MEDIA_GOLES * ratio
-    xg_b = MEDIA_GOLES * (1 - ratio)
-
-    # Clamping razonable [0.3, 3.5]
-    xg_a = max(0.3, min(3.5, xg_a))
-    xg_b = max(0.3, min(3.5, xg_b))
+    # Parámetros base de goles (media esperada 2.5 por partido)
+    base_xg_local = 1.35
+    base_xg_visitante = 1.15
+    
+    # FACTOR DE AGRESIVIDAD: 
+    # Si quieres más goleadas, sube esto a 0.0045. Si es muy exagerado, bájalo a 0.0025.
+    factor_agresividad = 0.0035 
+    
+    diff_elo = (elo_a - elo_b)
+    
+    # Cálculo: El equipo con mejor Elo aumenta su xG, el peor lo pierde
+    xg_a = base_xg_local + (diff_elo * factor_agresividad)
+    xg_b = base_xg_visitante - (diff_elo * factor_agresividad)
+    
+    # Clamping: Límites para que el modelo no se vuelva loco (mínimo 0.2 goles, máximo 4.0)
+    xg_a = max(0.2, min(4.0, xg_a))
+    xg_b = max(0.2, min(4.0, xg_b))
+    
     return round(xg_a, 2), round(xg_b, 2)
 
 
