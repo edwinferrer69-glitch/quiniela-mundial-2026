@@ -2,8 +2,6 @@ import streamlit as st
 import numpy as np
 from scipy.stats import poisson
 import plotly.graph_objects as go
-import plotly.express as px
-from plotly.subplots import make_subplots
 import math
 
 # ─────────────────────────────────────────────
@@ -288,9 +286,9 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-# ─────────────────────────────────────────────────────────────
-#  BASE DE DATOS ELO – MUNDIAL 2026 (48 EQUIPOS COMPLETOS)
-# ─────────────────────────────────────────────────────────────
+# ─────────────────────────────────────────────
+#  BASE DE DATOS ELO – MUNDIAL 2026 (48 EQUIPOS CON BANDERAS)
+# ─────────────────────────────────────────────
 ELO_RATINGS = {
     # CONMEBOL
     "🇦🇷 Argentina": 2140, "🇧🇷 Brasil": 2050, "🇺🇾 Uruguay": 1950, "🇨🇴 Colombia": 1930, 
@@ -300,25 +298,20 @@ ELO_RATINGS = {
     "🇫🇷 Francia": 2120, "🇪🇸 España": 2040, "🏴󠁧󠁢󠁥󠁮󠁧󠁿 Inglaterra": 2030, "🇵🇹 Portugal": 2010, 
     "🇳🇱 Países Bajos": 1980, "🇧🇪 Bélgica": 1970, "🇮🇹 Italia": 1960, "🇩🇪 Alemania": 1950, 
     "🇭🇷 Croacia": 1940, "🇨🇭 Suiza": 1890, "🇩🇰 Dinamarca": 1880, "🇦🇹 Austria": 1860, 
-    "🇷🇸 Serbia": 1850, "🇭🇺 Hungría": 1820, "🇺🇦 Ucrania": 1810, "🇵🇱 Polonia": 1800, 
-    "🇸🇪 Suecia": 1790, "🇨🇿 República Checa": 1730, "🏴󠁧󠁢󠁳󠁣󠁴󠁿 Escocia": 1700, 
-    "🇹🇷 Turquía": 1780, "🇧🇦 Bosnia y Herzegovina": 1600, "🇳🇴 Noruega": 1790,
+    "🇷🇸 Serbia": 1850, "🇭🇺 Hungría": 1820, "🇺🇦 Ucrania": 1810, "🇵🇱 Polonia": 1800,
     
     # CONCACAF
     "🇺🇸 Estados Unidos": 1830, "🇲🇽 México": 1810, "🇨🇦 Canadá": 1760, "🇵🇦 Panamá": 1720, 
-    "🇨🇷 Costa Rica": 1680, "🇯🇲 Jamaica": 1640, "🇭🇳 Honduras": 1590, "🇨🇼 Curazao": 1550,
-    "🇭🇹 Haití": 1500,
+    "🇨🇷 Costa Rica": 1680, "🇯🇲 Jamaica": 1640, "🇭🇳 Honduras": 1590,
     
     # CAF (África)
     "🇲🇦 Marruecos": 1880, "🇸🇳 Senegal": 1840, "🇪🇬 Egipto": 1790, "🇩🇿 Argelia": 1760, 
     "🇨🇮 Costa de Marfil": 1750, "🇳🇬 Nigeria": 1740, "🇨🇲 Camerún": 1710, "🇲🇱 Malí": 1690, 
-    "🇨🇻 Cabo Verde": 1620, "🇿🇦 Sudáfrica": 1650, "🇹🇳 Túnez": 1680, "🇨🇩 RD Congo": 1650,
-    "🇬🇭 Ghana": 1660,
+    "🇨🇻 Cabo Verde": 1620,
     
     # AFC (Asia)
     "🇯🇵 Japón": 1850, "🇮🇷 Irán": 1820, "🇰🇷 Corea del Sur": 1790, "🇦🇺 Australia": 1780, 
     "🇸🇦 Arabia Saudita": 1690, "🇶🇦 Qatar": 1670, "🇮🇶 Irak": 1640, "🇦🇪 Emiratos Árabes Unidos": 1610,
-    "🇺🇿 Uzbekistán": 1600, "🇯🇴 Jordania": 1550,
     
     # OFC (Oceanía)
     "🇳🇿 Nueva Zelanda": 1580
@@ -361,29 +354,33 @@ def calcular_prob_elo(elo_a: float, elo_b: float, ajuste_empate: bool) -> dict:
     }
 
 
-def calcular_xg(elo_a: float, elo_b: float) -> tuple:
+def calcular_xg(elo_a: float, elo_b: float, equipo_a: str, equipo_b: str) -> tuple:
     """
     Convierte diferencia Elo en goles esperados (xG) para cada equipo.
-    Modelo con factor de agresividad para evitar resultados planos.
+    En el Mundial 2026 se juega en campo neutral, por lo que la base de xG
+    comienza igual para ambos equipos. Si uno de los equipos es anfitrión
+    (Estados Unidos, México, Canadá), recibe un pequeño ajuste positivo.
     """
-    # Parámetros base de goles (media esperada 2.5 por partido)
-    base_xg_local = 1.35
-    base_xg_visitante = 1.15
-    
-    # FACTOR DE AGRESIVIDAD: 
-    # Si quieres más goleadas, sube esto a 0.0045. Si es muy exagerado, bájalo a 0.0025.
-    factor_agresividad = 0.0045 
-    
-    diff_elo = (elo_a - elo_b)
-    
-    # Cálculo: El equipo con mejor Elo aumenta su xG, el peor lo pierde
-    xg_a = base_xg_local + (diff_elo * factor_agresividad)
-    xg_b = base_xg_visitante - (diff_elo * factor_agresividad)
-    
-    # Clamping: Límites para que el modelo no se vuelva loco (mínimo 0.2 goles, máximo 4.0)
-    xg_a = max(0.2, min(4.0, xg_a))
-    xg_b = max(0.2, min(4.0, xg_b))
-    
+    BASE_XG_POR_EQUIPO = 1.25
+    diff = elo_a - elo_b
+
+    # Ajuste por entorno neutral + diferencia Elo
+    xg_a = BASE_XG_POR_EQUIPO + diff * 0.0008
+    xg_b = BASE_XG_POR_EQUIPO - diff * 0.0008
+
+    anfitriones = {"🇺🇸 Estados Unidos", "🇲🇽 México", "🇨🇦 Canadá"}
+    ventaja_anfitrion = 0.08
+
+    if equipo_a in anfitriones and equipo_b not in anfitriones:
+        xg_a += ventaja_anfitrion
+        xg_b -= ventaja_anfitrion
+    elif equipo_b in anfitriones and equipo_a not in anfitriones:
+        xg_b += ventaja_anfitrion
+        xg_a -= ventaja_anfitrion
+
+    # Clamping razonable [0.3, 3.5]
+    xg_a = max(0.3, min(3.5, xg_a))
+    xg_b = max(0.3, min(3.5, xg_b))
     return round(xg_a, 2), round(xg_b, 2)
 
 
@@ -455,7 +452,7 @@ diff_elo = elo_a - elo_b
 ajuste = abs(diff_elo) < 60
 
 probs = calcular_prob_elo(elo_a, elo_b, ajuste)
-xg_a, xg_b = calcular_xg(elo_a, elo_b)
+xg_a, xg_b = calcular_xg(elo_a, elo_b, equipo_a, equipo_b)
 marcadores = matriz_poisson(xg_a, xg_b)
 top3 = marcadores[:3]
 
